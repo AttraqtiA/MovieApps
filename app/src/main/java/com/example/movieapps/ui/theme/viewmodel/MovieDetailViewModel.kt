@@ -5,8 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.movieapps.data.DataSource
 import com.example.movieapps.model.Movie
+import com.example.movieapps.repository.MovieDBAPIContainer
 import kotlinx.coroutines.launch
 
 sealed interface MovieDetailUiState {
@@ -22,13 +22,13 @@ class MovieDetailViewModel(): ViewModel() {
 
     fun getMovieById(id: Int) {
         viewModelScope.launch {
-            for (movie in DataSource().loadMovie()) {
-                if (movie.id == id) {
-                    data = movie
-                    break
-                }
-            }
+            data = MovieDBAPIContainer().MovieDBRepositories.getMovieDetail((id))
+
             movieDetailUiState = MovieDetailUiState.Success(data)
         }
+    }
+
+    fun onFavClicked(movie: Movie) {
+        movie.isLiked = !movie.isLiked
     }
 }

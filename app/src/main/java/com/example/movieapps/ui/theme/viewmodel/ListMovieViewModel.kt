@@ -5,8 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.movieapps.data.DataSource
 import com.example.movieapps.model.Movie
+import com.example.movieapps.repository.MovieDBAPIContainer
 import kotlinx.coroutines.launch
 
 sealed interface ListMovieUIState {
@@ -28,7 +28,7 @@ class ListMovieViewModel: ViewModel() {
     fun loadData() {
         viewModelScope.launch {
             try {
-                data = DataSource().loadMovie()
+                data = MovieDBAPIContainer().MovieDBRepositories.getAllMovie(1)
 
                 listMovieUIState = ListMovieUIState.Success(data)
             } catch (e: Exception) {

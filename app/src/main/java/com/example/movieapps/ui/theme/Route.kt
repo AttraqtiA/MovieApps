@@ -141,7 +141,6 @@ fun BottomNavBarMovieApps(navController: NavController){
     }
 }
 
-
 sealed class BottomNavItem(var title:String, var icon:Int, var route:String){
     object Home : BottomNavItem("Home", R.drawable.ic_home, ListScreen.ListMovie.name)
     object Search: BottomNavItem("Search", R.drawable.ic_search, ListScreen.Search.name)
@@ -191,7 +190,7 @@ fun MovieAppsRoute() {
                 val listMovieViewModel: ListMovieViewModel = viewModel()
                 val status = listMovieViewModel.listMovieUIState
                 when (status) {
-                    is ListMovieUIState.Loading -> { LoadingView() }
+                    is ListMovieUIState.Loading ->  LoadingView()
                     is ListMovieUIState.Success -> {
                         ListMovieView(
                             movieList = status.data,
@@ -217,7 +216,11 @@ fun MovieAppsRoute() {
                     is MovieDetailUiState.Loading -> { LoadingView() }
 
                     is MovieDetailUiState.Success -> {
-                        MovieDetailView(movie = status.data, onFavClicked = {})
+                        MovieDetailView(
+                            movie = status.data,
+                            onFavClicked = { movie -> movieDetailViewModel.onFavClicked(movie) }
+                        )
+                        canNavigateBack = navController.previousBackStackEntry != null
                     }
                     is MovieDetailUiState.Error -> {}
                 }
