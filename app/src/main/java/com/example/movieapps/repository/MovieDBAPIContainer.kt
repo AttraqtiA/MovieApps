@@ -1,12 +1,10 @@
 package com.example.movieapps.repository
 
 import com.example.movieapps.service.MovieDBServices
-import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import kotlinx.serialization.json.Json
 import okhttp3.Interceptor
-import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class AuthInterceptor(private val bearerToken: String) : Interceptor { // import yg okhttp3 yow
     override fun intercept(chain: Interceptor.Chain): okhttp3.Response {
@@ -32,7 +30,9 @@ class MovieDBAPIContainer { // ngurus aksebilitas ajah
         .build()
 
     private val retrofit = Retrofit.Builder()
-        .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
+//        .addConverterFactory(Json.asConverterFactory("application/json".toMediaType())) dulu
+        .addConverterFactory(
+            GsonConverterFactory.create())
         .baseUrl(BASE_URL)
         .client(client)
         .build()
